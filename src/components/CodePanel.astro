@@ -1,0 +1,25 @@
+---
+const { htmlId } = Astro.props;
+let { placeHolder, CodeComponent, class: minHeight } = Astro.props;
+if (CodeComponent && placeHolder) {
+    throw new Error('You cannot use both CodeComponent and placeHolder at the same time');
+}
+if (!CodeComponent && !placeHolder) {
+    placeHolder = placeHolder || '---'
+}
+if (!minHeight) {
+    minHeight = 'min-h-64'
+}
+---
+
+
+<div class=`mockup-code w-full pl-2 m-2 max-h-64 overflow-scroll text-xs bg-white text-black overflow-x-hidden text-wrap ${minHeight}`>
+    {
+        CodeComponent ? 
+        <pre ><code><CodeComponent /></code></pre> :
+        <pre><code id={htmlId}>{placeHolder}</code></pre>
+    }
+</div>
+
+
+    

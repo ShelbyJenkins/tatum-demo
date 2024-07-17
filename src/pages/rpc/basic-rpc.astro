@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CodeComparisonTabs from '../../components/CodeComparisonTabs.astro';
+import { Content as nativeEthBlockNumber } from '../../content/codeSamples/nativeEthBlockNumber.md';
+import { Content as tatumEthBlockNumber } from '../../content/codeSamples/tatumEthBlockNumber.md';
+import CodePanel from '../../components/CodePanel.astro';
+
+const demoText = "Get the latest block number from the Ethereum mainnet";
+---
+<BaseLayout>
+	<article>
+		<h1>Get the latest block number on Ethereum</h1>
+		<div class="divider"></div>
+		<CodeComparisonTabs tatumSdk={tatumEthBlockNumber} nativeVariant1={nativeEthBlockNumber} nativeVariantName1="EVM RPC"/>
+		<div class="flex flex-col items-center mt-10 w-full">
+			<button class="btn btn-wide border-2 border-tatum-green hover:bg-tatum-green" id="actionButton">Try with Tatum</button>
+			<CodePanel class="min-h-32" htmlId="responseTextbox" placeHolder={demoText}/>
+		</div>	
+	</article>
+</BaseLayout>
+<script>
+	import { TatumSDK, Network, Ethereum } from '@tatumio/tatum'
+	let responseTextbox;
+
+	async function getBlock() {
+		const currentTimestamp = new Date().toLocaleTimeString();
+		try {
+			responseTextbox.innerText = '';
+			const tatum = await TatumSDK.init<Ethereum>({network: Network.ETHEREUM});
+			const latestBlockResponse = await tatum.rpc.blockNumber();
+			if (latestBlockResponse.result !== undefined) {
+				responseTextbox.innerText = `Latest block number: ${latestBlockResponse.result} on ethereum-mainnet`
+				console.log(`Latest block number: ${latestBlockResponse.result} on ethereum-mainnet`)
+			} else {
+				throw new Error("Unexpected response structure");
+			}
+		} catch (e) {
+			responseTextbox.innerText = `Error fetching the latest block at ${currentTimestamp}:\n\n` + (e.message || JSON.stringify(e));
+		}
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		const actionButton = document.getElementById('actionButton');
+		responseTextbox = document.getElementById('responseTextbox') as HTMLInputElement;
+		if (!actionButton || !responseTextbox) {
+			throw new Error('Could not find the required elements');
+		}
+		actionButton.addEventListener('click', async function() {await getBlock();});
+	});
+
+
+
+</script>
