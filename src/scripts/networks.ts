@@ -1,6 +1,5 @@
 import { 
     Network, 
-    LOAD_BALANCER_NETWORKS, 
     isLoadBalancerNetwork,
     isEvmBasedNetwork,
     isUtxoBasedNetwork,
@@ -14,6 +13,12 @@ import {
     isAlgorandAlgodNetwork,
     isAlgorandIndexerNetwork,
     isBnbLoadBalancerNetwork,
+    isEvmLoadBalancerNetwork,
+    isDogecoinLoadBalancedNetwork,
+    isRostrumLoadBalancerNetwork,
+    isIotaNetwork,
+    isKadenaLoadBalancerNetwork,
+    isCasperNetwork,
 } from '@tatumio/tatum'
 
 export interface ChainsAndNetworks {
@@ -58,7 +63,7 @@ function getServiceFunction(serviceType: string) {
 }
 
 function getChainType(chain: any): string {
-    if (isEvmBasedNetwork(chain)) {
+    if (isEvmBasedNetwork(chain) || isEvmLoadBalancerNetwork(chain)) {
         return 'EVM';
     } else if (isUtxoBasedNetwork(chain)) {
         return 'UTXO';
@@ -82,6 +87,16 @@ function getChainType(chain: any): string {
         return 'ALGORAND';
     } else if (isBnbLoadBalancerNetwork(chain)) {
         return 'BNB';
+    } else if (isDogecoinLoadBalancedNetwork(chain)) {
+        return 'DOGE';
+    } else if (isKadenaLoadBalancerNetwork(chain)) {
+        return 'KADENA';
+    } else if (isRostrumLoadBalancerNetwork(chain)) {
+        return 'ROSTRUM';
+    } else if (isIotaNetwork(chain)) {
+        return 'IOTA';
+    } else if (isCasperNetwork(chain)) {
+        return 'CASPER';
     }
     throw new Error(`Chain type not found for ${chain}`);        
     }

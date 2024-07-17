@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import CodeComparisonTabs from '../../components/CodeComparisonTabs.astro'
+import { Content as tatumNotificationBasic } from '../../content/codeSamples/tatumNotificationBasic.md'
+import { Content as tatumNotificationBulk } from '../../content/codeSamples/tatumNotificationBulk.md'
+import { Content as tatumNotificationGet } from '../../content/codeSamples/tatumNotificationGet.md'
+
+const demoText = 'Get a notification any time a wallet participates in a transaction.'
+---
+
+<BaseLayout>
+  <article>
+    <h1>Create and Recieve Webhook Notifications</h1>
+    <div class="divider"></div>
+
+    <CodeComparisonTabs
+      tatumSdk={tatumNotificationBasic}
+      nativeVariant1={tatumNotificationGet}
+      nativeVariantName1="Get Existing"
+      nativeVariant2={tatumNotificationBulk}
+      nativeVariantName2="Bulk Add/Delete"
+    />
+  </article>
+</BaseLayout>
