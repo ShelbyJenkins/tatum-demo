@@ -43,8 +43,7 @@ const demoText = 'Get the latest block number from any EVM mainnet'
       const requestNetwork: Network = getNetwork(serviceConfigNetwork.value)
 
       const tatum = await TatumSDK.init({ network: requestNetwork })
-      import { NotificationSubscription, ResponseDto } from '@tatumio/tatum'
-      const { status, data }: ResponseDto<NotificationSubscription[]> = await tatum.notification.getAll()
+     
       const latestBlockResponse = await tatum.rpc.blockNumber()
       if (latestBlockResponse.result !== undefined) {
         responseTextbox.innerText = `Latest block number: ${latestBlockResponse.result} on ${serviceConfigNetwork.value}`
